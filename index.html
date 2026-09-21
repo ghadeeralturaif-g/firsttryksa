@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>مسابقة اليوم الوطني السعودي 94</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-900:#0c3d2c;
+    --green-700:#12523a;
+    --green-600:#1a6b4a;
+    --green-400:#3f9268;
+    --sand-300:#e9dfc3;
+    --sand-100:#f8f4e9;
+    --cream:#fbf9f2;
+    --gold:#b6923a;
+    --ink:#12241c;
+    --ink-soft:#4a5a51;
+    --danger:#a8342a;
+    --white:#ffffff;
+    --radius-lg:22px;
+    --radius-md:14px;
+    --shadow:0 20px 50px -20px rgba(12,61,44,0.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans Arabic", sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,255,255,0.06), transparent 40%),
+      linear-gradient(160deg, var(--green-900) 0%, var(--green-700) 45%, var(--green-600) 100%);
+    min-height:100%;
+    padding: calc(28px + env(safe-area-inset-top,0px)) 18px calc(28px + env(safe-area-inset-bottom,0px));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow-x:hidden;
+  }
+  /* Najdi-inspired triangular border motif, faint, top & bottom */
+  body::before, body::after{
+    content:"";
+    position:fixed;
+    left:0; right:0;
+    height:14px;
+    background-image: linear-gradient(135deg, var(--gold) 25%, transparent 25%), linear-gradient(225deg, var(--gold) 25%, transparent 25%);
+    background-size: 24px 24px;
+    opacity:0.35;
+    pointer-events:none;
+  }
+  body::before{ top:0; }
+  body::after{ bottom:0; transform:rotate(180deg); }
+
+  .stage{
+    width:100%;
+    max-width:480px;
+  }
+
+  .badge-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:18px;
+    color:var(--sand-100);
+  }
+  .badge-row .num{
+    font-family:"Almarai", sans-serif;
+    font-weight:800;
+    font-size:34px;
+    color:var(--white);
+    line-height:1;
+  }
+  .badge-row .label{
+    text-align:right;
+    line-height:1.35;
+  }
+  .badge-row .label strong{
+    display:block;
+    font-family:"Almarai", sans-serif;
+    font-size:16px;
+    color:var(--white);
+  }
+  .badge-row .label span{
+    font-size:12.5px;
+    color:var(--sand-300);
+  }
+
+  .card{
+    background:var(--cream);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    position:relative;
+  }
+  .card::before{
+    content:"";
+    display:block;
+    height:6px;
+    background:linear-gradient(90deg, var(--gold), var(--green-400) 45%, var(--gold));
+  }
+
+  .card-inner{ padding:30px 26px 26px; }
+
+  .progress{
+    display:flex;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .progress .seg{
+    flex:1;
+    height:5px;
+    border-radius:99px;
+    background:rgba(18,36,28,0.12);
+    overflow:hidden;
+  }
+  .progress .seg i{
+    display:block;
+    height:100%;
+    width:0%;
+    background:var(--green-600);
+    transition:width .45s ease;
+  }
+  .progress .seg.done i{ width:100%; }
+  .progress .seg.active i{ width:100%; }
+
+  h1.step-title{
+    font-family:"Almarai", sans-serif;
+    font-weight:800;
+    font-size:22px;
+    margin:0 0 6px;
+    color:var(--green-900);
+  }
+  p.step-sub{
+    margin:0 0 22px;
+    color:var(--ink-soft);
+    font-size:14.5px;
+    line-height:1.6;
+  }
+
+  .field{ margin-bottom:16px; }
+  .field label{
+    display:block;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--green-900);
+    margin-bottom:7px;
+  }
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field select{
+    width:100%;
+    padding:13px 14px;
+    border-radius:var(--radius-md);
+    border:1.5px solid rgba(18,36,28,0.15);
+    background:var(--white);
+    font-family:inherit;
+    font-size:15px;
+    color:var(--ink);
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+    appearance:none;
+    -webkit-appearance:none;
+  }
+  .field select{
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2312523a'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat:no-repeat;
+    background-position:left 12px center;
+    background-size:20px;
+    padding-left:38px;
+  }
+  .field input:focus, .field select:focus{
+    border-color:var(--green-600);
+    box-shadow:0 0 0 3px rgba(26,107,74,0.15);
+  }
+  .field .error-msg{
+    display:none;
+    color:var(--danger);
+    font-size:12.5px;
+    margin-top:6px;
+  }
+  .field.invalid input, .field.invalid select{ border-color:var(--danger); }
+  .field.invalid .error-msg{ display:block; }
+
+  .btn{
+    width:100%;
+    padding:15px 18px;
+    border:none;
+    border-radius:var(--radius-md);
+    font-family:"Almarai", sans-serif;
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+  }
+  .btn:active{ transform:scale(0.98); }
+  .btn-primary{
+    background:var(--green-700);
+    color:var(--white);
+    box-shadow:0 10px 24px -10px rgba(18,82,58,0.7);
+  }
+  .btn-primary:hover{ background:var(--green-600); }
+  .btn-primary:disabled{ opacity:0.6; cursor:progress; }
+  .btn-ghost{
+    background:transparent;
+    color:var(--green-900);
+    border:1.5px solid rgba(18,36,28,0.18);
+    margin-top:10px;
+  }
+
+  /* Quiz */
+  .question-block{ margin-bottom:22px; }
+  .question-block:last-child{ margin-bottom:0; }
+  .q-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px; height:24px;
+    border-radius:50%;
+    background:var(--green-700);
+    color:var(--white);
+    font-size:12px;
+    font-weight:700;
+    font-family:"Almarai", sans-serif;
+    margin-left:8px;
+  }
+  .q-text{
+    font-weight:700;
+    font-size:15px;
+    color:var(--green-900);
+    display:flex;
+    align-items:flex-start;
+    margin-bottom:12px;
+    line-height:1.5;
+  }
+  .options{ display:flex; flex-direction:column; gap:9px; }
+  .option{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    border-radius:var(--radius-md);
+    border:1.5px solid rgba(18,36,28,0.15);
+    background:var(--white);
+    cursor:pointer;
+    font-size:14.5px;
+    transition:border-color .15s, background .15s;
+  }
+  .option:hover{ border-color:var(--green-400); }
+  .option input{ accent-color:var(--green-700); width:17px; height:17px; flex-shrink:0; }
+  .option.selected{
+    border-color:var(--green-600);
+    background:rgba(26,107,74,0.08);
+  }
+
+  /* Thank you page */
+  .thanks{ text-align:center; }
+  .thanks .emblem{
+    width:74px; height:74px;
+    margin:0 auto 18px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--green-400), var(--green-700));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 12px 26px -10px rgba(18,82,58,0.6);
+  }
+  .thanks .emblem svg{ width:36px; height:36px; }
+  .thanks h1{
+    font-family:"Almarai", sans-serif;
+    font-weight:800;
+    font-size:23px;
+    color:var(--green-900);
+    margin:0 0 10px;
+  }
+  .thanks p{ color:var(--ink-soft); font-size:14.5px; line-height:1.7; margin:0 0 22px; }
+  .score-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--green-900);
+    color:var(--white);
+    font-family:"Almarai", sans-serif;
+    font-weight:800;
+    font-size:22px;
+    padding:12px 26px;
+    border-radius:99px;
+    margin-bottom:6px;
+  }
+  .score-pill small{
+    font-family:"IBM Plex Sans Arabic", sans-serif;
+    font-weight:500;
+    font-size:12.5px;
+    color:var(--sand-300);
+  }
+  .score-caption{ font-size:13px; color:var(--ink-soft); margin-top:14px; }
+
+  .city-other{ margin-top:10px; }
+
+  .footer-note{
+    text-align:center;
+    color:rgba(251,249,242,0.65);
+    font-size:12px;
+    margin-top:18px;
+  }
+
+  .hidden{ display:none !important; }
+
+  @media (max-width:380px){
+    .card-inner{ padding:24px 18px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="badge-row">
+    <div class="label">
+      <strong>اليوم الوطني السعودي</strong>
+      <span>نحلم ونحقق</span>
+    </div>
+    <div class="num">٩٤</div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+
+      <div class="progress">
+        <div class="seg" data-seg="1"><i></i></div>
+        <div class="seg" data-seg="2"><i></i></div>
+        <div class="seg" data-seg="3"><i></i></div>
+      </div>
+
+      <!-- STEP 1 -->
+      <section id="step-1">
+        <h1 class="step-title">بيانات المتسابق</h1>
+        <p class="step-sub">شاركنا بياناتك لبدء مسابقة اليوم الوطني الـ94، ثم اختبر معلوماتك في 3 أسئلة سريعة.</p>
+
+        <div class="field" id="field-name">
+          <label for="name">الاسم الكامل</label>
+          <input type="text" id="name" placeholder="اكتب اسمك الكامل" autocomplete="name">
+          <div class="error-msg">الرجاء إدخال الاسم الكامل</div>
+        </div>
+
+        <div class="field" id="field-phone">
+          <label for="phone">رقم الجوال</label>
+          <input type="tel" id="phone" placeholder="05xxxxxxxx" autocomplete="tel" inputmode="numeric">
+          <div class="error-msg">الرجاء إدخال رقم جوال صحيح (10 أرقام)</div>
+        </div>
+
+        <div class="field" id="field-city">
+          <label for="city">المدينة</label>
+          <select id="city">
+            <option value="" selected disabled>اختر مدينتك</option>
+            <option>الرياض</option>
+            <option>جدة</option>
+            <option>مكة المكرمة</option>
+            <option>المدينة المنورة</option>
+            <option>الدمام</option>
+            <option>الخبر</option>
+            <option>الظهران</option>
+            <option>الأحساء</option>
+            <option>الطائف</option>
+            <option>بريدة</option>
+            <option>عنيزة</option>
+            <option>تبوك</option>
+            <option>حائل</option>
+            <option>أبها</option>
+            <option>خميس مشيط</option>
+            <option>جازان</option>
+            <option>نجران</option>
+            <option>الباحة</option>
+            <option>ينبع</option>
+            <option>القطيف</option>
+            <option>عرعر</option>
+            <option>سكاكا</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+          <div class="error-msg">الرجاء اختيار المدينة</div>
+          <div class="city-other hidden" id="city-other-wrap">
+            <input type="text" id="city-other" placeholder="اكتب اسم مدينتك">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-to-step2">
+          التالي / بدء المسابقة
+        </button>
+      </section>
+
+      <!-- STEP 2 -->
+      <section id="step-2" class="hidden">
+        <h1 class="step-title">أسئلة المسابقة</h1>
+        <p class="step-sub">اختر الإجابة الصحيحة لكل سؤال، ثم اضغط إرسال الإجابات.</p>
+
+        <div class="question-block">
+          <div class="q-text"><span class="q-num">1</span>في أي عام تم توحيد المملكة العربية السعودية على يد الملك عبد العزيز آل سعود رحمه الله؟</div>
+          <div class="options" data-question="1" data-correct="b">
+            <label class="option"><input type="radio" name="q1" value="a"> 1940م</label>
+            <label class="option"><input type="radio" name="q1" value="b"> 1932م / 1351هـ</label>
+            <label class="option"><input type="radio" name="q1" value="c"> 1925م</label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-text"><span class="q-num">2</span>ما هو الشعار اللفظي المعتمد لليوم الوطني السعودي الـ94؟</div>
+          <div class="options" data-question="2" data-correct="a">
+            <label class="option"><input type="radio" name="q2" value="a"> نحلم ونحقق</label>
+            <label class="option"><input type="radio" name="q2" value="b"> هي لنا دار</label>
+            <label class="option"><input type="radio" name="q2" value="c"> ثقة وتمكين</label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <div class="q-text"><span class="q-num">3</span>ما اسم العاصمة الأولى للدولة السعودية الأولى؟</div>
+          <div class="options" data-question="3" data-correct="a">
+            <label class="option"><input type="radio" name="q3" value="a"> الدرعية</label>
+            <label class="option"><input type="radio" name="q3" value="b"> الرياض</label>
+            <label class="option"><input type="radio" name="q3" value="c"> جدة</label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-submit">إرسال الإجابات</button>
+        <button class="btn btn-ghost" id="btn-back">رجوع</button>
+      </section>
+
+      <!-- STEP 3 -->
+      <section id="step-3" class="hidden">
+        <div class="thanks">
+          <div class="emblem">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 13l4 4L19 7" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h1>شكراً لمشاركتك!</h1>
+          <p>نقدّر مشاركتك في مسابقة اليوم الوطني السعودي الـ94. نتمنى لك عاماً مليئاً بالفخر والإنجاز. نحلم ونحقق 🇸🇦</p>
+          <div class="score-pill">
+            <span id="score-value">0/3</span>
+            <small>إجابات صحيحة</small>
+          </div>
+          <div class="score-caption" id="score-caption"></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <p class="footer-note">اليوم الوطني السعودي — 23 سبتمبر</p>
+</div>
+
+<script>
+(function(){
+  // ============================================================
+  // ضع هنا رابط تطبيق الويب (Web App URL) الخاص بـ Google Apps Script
+  // بعد نشره كما هو موضح في التعليمات المرفقة
+  // ============================================================
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwc8msQQL5uIDlelJYle8aKCH7tN83tAHvILJSS7a1eBXE2Bmfm5n5u09OwC1FjWHryIA/exec";
+
+  const step1 = document.getElementById('step-1');
+  const step2 = document.getElementById('step-2');
+  const step3 = document.getElementById('step-3');
+  const segs = document.querySelectorAll('.progress .seg');
+
+  function setProgress(step){
+    segs.forEach((s,i)=>{
+      s.classList.remove('active','done');
+      if(i < step-1) s.classList.add('done');
+      else if(i === step-1) s.classList.add('active');
+    });
+  }
+  setProgress(1);
+
+  // --- Step 1 validation ---
+  const nameInput = document.getElementById('name');
+  const phoneInput = document.getElementById('phone');
+  const citySelect = document.getElementById('city');
+  const cityOtherWrap = document.getElementById('city-other-wrap');
+  const cityOtherInput = document.getElementById('city-other');
+
+  citySelect.addEventListener('change', function(){
+    if(this.value === 'أخرى'){
+      cityOtherWrap.classList.remove('hidden');
+      cityOtherInput.focus();
+    } else {
+      cityOtherWrap.classList.add('hidden');
+      cityOtherInput.value = '';
+    }
+    document.getElementById('field-city').classList.remove('invalid');
+  });
+
+  function validateStep1(){
+    let ok = true;
+
+    const nameVal = nameInput.value.trim();
+    const fieldName = document.getElementById('field-name');
+    if(nameVal.length < 2){
+      fieldName.classList.add('invalid'); ok = false;
+    } else fieldName.classList.remove('invalid');
+
+    const phoneVal = phoneInput.value.trim();
+    const fieldPhone = document.getElementById('field-phone');
+    const phoneDigits = phoneVal.replace(/[^0-9]/g,'');
+    if(phoneDigits.length < 9){
+      fieldPhone.classList.add('invalid'); ok = false;
+    } else fieldPhone.classList.remove('invalid');
+
+    const fieldCity = document.getElementById('field-city');
+    if(!citySelect.value){
+      fieldCity.classList.add('invalid'); ok = false;
+    } else if(citySelect.value === 'أخرى' && cityOtherInput.value.trim().length < 2){
+      fieldCity.classList.add('invalid'); ok = false;
+    } else {
+      fieldCity.classList.remove('invalid');
+    }
+
+    return ok;
+  }
+
+  function getCityValue(){
+    return citySelect.value === 'أخرى' ? cityOtherInput.value.trim() : citySelect.value;
+  }
+
+  document.getElementById('btn-to-step2').addEventListener('click', function(){
+    if(validateStep1()){
+      step1.classList.add('hidden');
+      step2.classList.remove('hidden');
+      setProgress(2);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
+
+  document.getElementById('btn-back').addEventListener('click', function(){
+    step2.classList.add('hidden');
+    step1.classList.remove('hidden');
+    setProgress(1);
+  });
+
+  // --- Step 2: option highlight ---
+  document.querySelectorAll('.options').forEach(function(group){
+    group.addEventListener('change', function(e){
+      group.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+      e.target.closest('.option').classList.add('selected');
+    });
+  });
+
+  function calculateScore(){
+    let score = 0;
+    document.querySelectorAll('.options').forEach(function(group){
+      const correct = group.getAttribute('data-correct');
+      const checked = group.querySelector('input:checked');
+      if(checked && checked.value === correct) score++;
+    });
+    return score;
+  }
+
+  // --- Submit ---
+  const submitBtn = document.getElementById('btn-submit');
+  submitBtn.addEventListener('click', function(){
+    const score = calculateScore();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'جاري الإرسال...';
+
+    const payload = new FormData();
+    payload.append('name', nameInput.value.trim());
+    payload.append('phone', phoneInput.value.trim());
+    payload.append('city', getCityValue());
+    payload.append('correctAnswers', score);
+
+    function goToThanks(){
+      document.getElementById('score-value').textContent = score + '/3';
+      const captions = {
+        3: 'إجابة مثالية! أنت خبير في تاريخ اليوم الوطني 🎉',
+        2: 'أداء رائع! قريب جداً من الإجابة الكاملة.',
+        1: 'محاولة جيدة، إجابة واحدة صحيحة.',
+        0: 'شكراً لمحاولتك، حاول مرة أخرى في المرة القادمة!'
+      };
+      document.getElementById('score-caption').textContent = captions[score];
+      step2.classList.add('hidden');
+      step3.classList.remove('hidden');
+      setProgress(3);
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    if(!SCRIPT_URL || SCRIPT_URL.indexOf('PASTE_YOUR') === 0){
+      // لم يتم ضبط رابط جوجل شيت بعد — ينتقل مباشرة لصفحة الشكر (وضع تجريبي)
+      goToThanks();
+      return;
+    }
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: payload
+    })
+    .then(goToThanks)
+    .catch(function(){
+      // حتى في حال فشل الإرسال، نُظهر صفحة الشكر حتى لا تتعطل تجربة المتسابق
+      goToThanks();
+    });
+  });
+})();
+</script>
+</body>
+</html>
